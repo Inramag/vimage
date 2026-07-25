@@ -15,6 +15,7 @@ private:
     Texture2D texture{};
 
     void updateTransform();
+    void drawBackground();
 
     float scale;
     Vector2 position;
