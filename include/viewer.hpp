@@ -18,5 +18,6 @@ private:
     void drawBackground();
 
     float scale;
+    Vector2 ssize;
     Vector2 position;
 };
