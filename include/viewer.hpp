@@ -8,16 +8,22 @@ class Viewer {
 public:
     bool open(const std::filesystem::path& path);
 
-    void update();
     void draw();
 
 private:
-    Texture2D texture{};
+    Texture2D texture;
 
-    void updateTransform();
-    void drawBackground();
+    Vector2 getpos();
+    void getscale();
+
+    void amended();
+
+    void _draw();
+    void grid();
 
     float scale;
+    float zoom = 1;
     Vector2 ssize;
-    Vector2 position;
+    Vector2 offset;
+    Vector2 userPosition;
 };

@@ -21,8 +21,6 @@ int App::run(int argc, char* argv[]) {
     }
 
     while (!WindowShouldClose()) {
-        viewer.update();
-
         BeginDrawing();
         viewer.draw();
         EndDrawing();
