@@ -19,9 +19,9 @@ void Viewer::draw() {
 
 void Viewer::updateTransform() {
     scale = std::min(
-        static_cast<float>(GetScreenWidth()) / texture.width,
-        static_cast<float>(GetScreenHeight()) / texture.height
-    ) * 0.95f;
+        static_cast<float>(GetScreenWidth()) / (texture.width + 50),
+        static_cast<float>(GetScreenHeight()) / (texture.height + 50)
+    );
 
     position = {
         (GetScreenWidth() - texture.width * scale) / 2.0f,
