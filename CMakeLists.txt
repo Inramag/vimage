@@ -5,7 +5,6 @@ project(vimage LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Release по умолчанию
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
@@ -18,6 +17,8 @@ add_executable(vimage WIN32
     src/app.cpp
     src/error.cpp
     src/viewer.cpp
+
+    icon.rc
 )
 
 target_compile_options(vimage PRIVATE
