@@ -26,5 +26,4 @@ private:
     float zoom = 1;
     Vector2 ssize;
     Vector2 offset;
-    Vector2 userPosition;
 };

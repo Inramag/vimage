@@ -138,22 +138,35 @@ void Viewer::grid() {
     int right  = left + static_cast<int>(ssize.x);
     int bottom = top + static_cast<int>(ssize.y);
 
-    int startY = top  + ((std::max(0, -top)  + size - 1) / size) * size;
+    int y = static_cast<int>(pos.y);
+    int startY = y;
+    if (y < 0) {
+        startY = -((-y) % size);
+    }
+
     int endY = std::min(bottom, GetScreenHeight());
 
-    int startX = left  + ((std::max(0, -left)  + size - 1) / size) * size;
+    int x = static_cast<int>(pos.x);
+    int startX = x;
+    if (x < 0) {
+        startX = -((-x) % size);
+    }
     int endX = std::min(right, GetScreenWidth());
 
     DrawRectangle(startX, startY, endX - startX, endY - startY, {255, 255, 255, 255});
 
+    bool evenRow = (((left - startX) / size + (top - startY) / size) & 1) == 0;
     for (int y = startY; y < endY; y += size) {
+        bool even = evenRow;
         for (int x = startX; x < endX; x += size) {
-            if (((x / size) + (y / size)) % 2 == 0) DrawRectangle(
+            if (even) DrawRectangle(
                 x, y,
-                std::min(size, right - x),
-                std::min(size, bottom - y),
+                std::min(size, endX - x),
+                std::min(size, endY - y),
                 {224, 224, 224, 255}
             );
+            even = !even;
         }
+        evenRow = !evenRow;
     }
 }
