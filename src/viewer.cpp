@@ -10,7 +10,23 @@ constexpr int padding = 20;
 bool Viewer::open(const std::filesystem::path& path) {
     texture = LoadTexture(path.string().c_str());
 
-    if (!IsTextureValid(texture)) return false; 
+    if (!IsTextureValid(texture)) return false;
+
+    switch (texture.format) {
+    case PIXELFORMAT_UNCOMPRESSED_GRAYSCALE:
+    case PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA:
+    case PIXELFORMAT_UNCOMPRESSED_R5G5B5A1:
+    case PIXELFORMAT_UNCOMPRESSED_R4G4B4A4:
+    case PIXELFORMAT_UNCOMPRESSED_R8G8B8A8:
+    case PIXELFORMAT_UNCOMPRESSED_R32:
+    case PIXELFORMAT_UNCOMPRESSED_R32G32B32A32:
+        hasalpha = true;
+        break;
+
+    default:
+        hasalpha = false;
+        break;
+    }
     
     getscale();
 
@@ -113,26 +129,30 @@ void Viewer::grid() {
         BLACK
     );
 
-    constexpr int size = 50;
+    if (!hasalpha) return;
 
-    Color light = {255, 255, 255, 255};
-    Color dark  = {224, 224, 224, 255};
+    constexpr int size = 50;
 
     int left   = static_cast<int>(pos.x);
     int top    = static_cast<int>(pos.y);
     int right  = left + static_cast<int>(ssize.x);
     int bottom = top + static_cast<int>(ssize.y);
 
-    for (int y = top; y < bottom; y += size) {
-        for (int x = left; x < right; x += size) {
-            bool even = ((x / size) + (y / size)) % 2 == 0;
+    int startY = top  + ((std::max(0, -top)  + size - 1) / size) * size;
+    int endY = std::min(bottom, GetScreenHeight());
 
-            DrawRectangle(
-                x,
-                y,
+    int startX = left  + ((std::max(0, -left)  + size - 1) / size) * size;
+    int endX = std::min(right, GetScreenWidth());
+
+    DrawRectangle(startX, startY, endX - startX, endY - startY, {255, 255, 255, 255});
+
+    for (int y = startY; y < endY; y += size) {
+        for (int x = startX; x < endX; x += size) {
+            if (((x / size) + (y / size)) % 2 == 0) DrawRectangle(
+                x, y,
                 std::min(size, right - x),
                 std::min(size, bottom - y),
-                even ? light : dark
+                {224, 224, 224, 255}
             );
         }
     }

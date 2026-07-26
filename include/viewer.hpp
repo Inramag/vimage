@@ -12,6 +12,7 @@ public:
 
 private:
     Texture2D texture;
+    bool hasalpha;
 
     Vector2 getpos();
     void getscale();
