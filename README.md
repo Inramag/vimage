@@ -7,6 +7,9 @@ A lightweight and fast image viewer for Windows.
 - Fast startup
 - Lightweight
 - Automatic image fitting
+- Mouse wheel zoom
+- Pan with the mouse wheel
+- Transparency checkerboard
 - Window resizing support
 
 ## Building
@@ -18,4 +21,5 @@ cmake --build build
 
 ## Dependencies
 
-raylib
+- raylib
+- stb_image
