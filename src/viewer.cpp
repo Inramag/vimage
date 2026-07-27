@@ -1,5 +1,7 @@
 #include <viewer.hpp>
 
+#include <settings.hpp>
+
 #include <vector2.hpp>
 
 #include <cmath>
@@ -29,6 +31,18 @@ bool Viewer::open(const std::filesystem::path& path) {
 }
 
 void Viewer::draw() {
+    if (IsKeyPressed(KEY_R)) {
+        offset = {0, 0};
+        zoom = 1;
+        getscale();
+    }
+    if (IsKeyPressed(KEY_G)) Settings::set(0b00000001, !Settings::checkerboard());
+    if (IsKeyPressed(KEY_P)) {
+        Settings::set(0b00000010, !Settings::padding());
+        getscale();
+    }
+    if (IsKeyPressed(KEY_F11)) ToggleFullscreen();
+
     amended();
     _draw();
 }
@@ -41,9 +55,10 @@ Vector2 Viewer::getpos() {
 }
 
 void Viewer::getscale() {
+    int pad = Settings::padding() ? padding : 0;
     scale = std::min(
-        static_cast<float>(GetScreenWidth() - padding * 2) / texture.width,
-        static_cast<float>(GetScreenHeight() - padding * 2) / texture.height
+        static_cast<float>(GetScreenWidth() - pad * 2) / texture.width,
+        static_cast<float>(GetScreenHeight() - pad * 2) / texture.height
     );
     float s = scale * zoom;
     ssize = {
@@ -148,6 +163,7 @@ void Viewer::grid() {
     int endX = std::min(right, GetScreenWidth());
 
     DrawRectangle(startX, startY, endX - startX, endY - startY, {255, 255, 255, 255});
+    if (!Settings::checkerboard()) return;
 
     bool evenRow = (((left - startX) / size + (top - startY) / size) & 1) == 0;
     for (int y = startY; y < endY; y += size) {

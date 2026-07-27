@@ -18,6 +18,7 @@ add_executable(vimage WIN32
     src/error.cpp
     src/stb/stb_image.cpp
     src/vimage.cpp
+    src/settings.cpp
     src/viewer.cpp
 
     icon.rc

@@ -11,11 +11,22 @@ A lightweight and fast image viewer for Windows.
 - Pan with the mouse wheel
 - Transparency checkerboard
 - Window resizing support
+- Keyboard shortcuts
 
 ## Supported Formats
 
 - PNG
 - JPEG (.jpg, .jpeg)
+
+## Controls
+
+| Action | Input |
+|--------|-------|
+| Zoom | Ctrl + Mouse Wheel |
+| Pan | Mouse Wheel |
+| Reset View | R |
+| Toggle Checkerboard | G |
+| Toggle Padding | P |
 
 ## Building
 
