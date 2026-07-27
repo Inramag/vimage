@@ -4,6 +4,9 @@
 
 class Settings {
 public:
+    static void save();
+    static void load();
+
     static bool get(uint8_t flag);
     static void set(uint8_t flag, bool value);
     
