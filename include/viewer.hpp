@@ -11,6 +11,8 @@ public:
     bool open(const std::filesystem::path& path);
 
     void draw();
+    
+    void getscale();
 
 private:
     VImage img;
@@ -19,7 +21,6 @@ private:
     bool hasalpha;
 
     Vector2 getpos();
-    void getscale();
 
     void amended();
 
