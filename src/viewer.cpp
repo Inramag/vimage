@@ -8,25 +8,19 @@
 constexpr int padding = 20;
 
 bool Viewer::open(const std::filesystem::path& path) {
-    texture = LoadTexture(path.string().c_str());
+    img = VImage::load(path);
 
-    if (!IsTextureValid(texture)) return false;
+    if (img.format == VFormat::unknown) return false;
 
-    switch (texture.format) {
-    case PIXELFORMAT_UNCOMPRESSED_GRAYSCALE:
-    case PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA:
-    case PIXELFORMAT_UNCOMPRESSED_R5G5B5A1:
-    case PIXELFORMAT_UNCOMPRESSED_R4G4B4A4:
-    case PIXELFORMAT_UNCOMPRESSED_R8G8B8A8:
-    case PIXELFORMAT_UNCOMPRESSED_R32:
-    case PIXELFORMAT_UNCOMPRESSED_R32G32B32A32:
-        hasalpha = true;
-        break;
+    Image image{};
 
-    default:
-        hasalpha = false;
-        break;
-    }
+    image.data = img.frames[0].pixels.data();
+    image.width = img.width;
+    image.height = img.height;
+    image.mipmaps = 1;
+    image.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+
+    texture = LoadTextureFromImage(image);
     
     getscale();
 
@@ -129,7 +123,7 @@ void Viewer::grid() {
         BLACK
     );
 
-    if (!hasalpha) return;
+    if (!img.hasalpha) return;
 
     constexpr int size = 50;
 

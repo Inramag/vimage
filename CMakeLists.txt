@@ -16,6 +16,8 @@ add_executable(vimage WIN32
 
     src/app.cpp
     src/error.cpp
+    src/stb/stb_image.cpp
+    src/vimage.cpp
     src/viewer.cpp
 
     icon.rc
@@ -54,7 +56,7 @@ target_link_directories(vimage PRIVATE
 )
 
 target_link_libraries(vimage PRIVATE
-    raylib
+    ${CMAKE_SOURCE_DIR}/raylib/lib/libraylibdll.a
     winmm
 )
 

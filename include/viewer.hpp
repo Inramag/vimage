@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vimage.hpp>
+
 #include <filesystem>
 
 #include <raylib.h>
@@ -11,6 +13,8 @@ public:
     void draw();
 
 private:
+    VImage img;
+    
     Texture2D texture;
     bool hasalpha;
 

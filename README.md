@@ -12,6 +12,11 @@ A lightweight and fast image viewer for Windows.
 - Transparency checkerboard
 - Window resizing support
 
+## Supported Formats
+
+- PNG
+- JPEG (.jpg, .jpeg)
+
 ## Building
 
 ```bash
