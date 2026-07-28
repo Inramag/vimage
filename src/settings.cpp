@@ -1,5 +1,6 @@
 #include <settings.hpp>
 
+#include <iostream>
 #include <fstream>
 
 uint8_t Settings::flags = 0b00000011;
@@ -24,6 +25,7 @@ bool Settings::get(uint8_t flag) {
 void Settings::set(uint8_t flag, bool value) {
     if (value) flags |= flag;
     else flags &= ~flag;
+    save();
 }
 
 bool Settings::checkerboard() {

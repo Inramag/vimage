@@ -22,6 +22,8 @@ A lightweight and fast image viewer for Windows.
 
 | Action | Input |
 |--------|-------|
+| Toggle Status Indicators | F1 |
+| Toggle Settings Menu | F2 |
 | Zoom | Ctrl + Mouse Wheel |
 | Pan | Mouse Wheel |
 | Reset View | R |
