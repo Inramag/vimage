@@ -31,14 +31,14 @@ bool Viewer::open(const std::filesystem::path& path) {
 }
 
 void Viewer::draw() {
-    if (IsKeyPressed(KEY_R)) {
+    if (IsKeyPressed(Settings::config.keys[0])) {
         offset = {0, 0};
         zoom = 1;
         getscale();
     }
-    if (IsKeyPressed(KEY_G)) Settings::set(0b00000001, !Settings::checkerboard());
-    if (IsKeyPressed(KEY_P)) {
-        Settings::set(0b00000010, !Settings::padding());
+    if (IsKeyPressed(Settings::config.keys[1])) Settings::setflag(0b00000001, !Settings::checkerboard());
+    if (IsKeyPressed(Settings::config.keys[2])) {
+        Settings::setflag(0b00000010, !Settings::padding());
         getscale();
     }
     if (IsKeyPressed(KEY_F11)) ToggleFullscreen();

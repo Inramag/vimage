@@ -8,10 +8,13 @@ A lightweight and fast image viewer for Windows.
 - Lightweight
 - Automatic image fitting
 - Mouse wheel zoom
-- Pan with the mouse wheel
+- Mouse panning
 - Transparency checkerboard
+- Optional image padding
+- Fullscreen mode
+- Configurable keyboard shortcuts
+- Persistent settings
 - Window resizing support
-- Keyboard shortcuts
 
 ## Supported Formats
 
@@ -26,9 +29,17 @@ A lightweight and fast image viewer for Windows.
 | Toggle Settings Menu | F2 |
 | Zoom | Ctrl + Mouse Wheel |
 | Pan | Mouse Wheel |
-| Reset View | R |
-| Toggle Checkerboard | G |
-| Toggle Padding | P |
+| Reset View | R *(configurable)* |
+| Toggle Checkerboard | G *(configurable)* |
+| Toggle Padding | P *(configurable)* |
+
+## Configuration
+
+Settings are stored in `conf.bin` and include:
+
+- Transparency checkerboard
+- Image padding
+- Configurable keyboard shortcuts
 
 ## Building
 
