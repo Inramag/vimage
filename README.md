@@ -2,6 +2,16 @@
 
 A lightweight and fast image viewer for Windows.
 
+## Scrrenshots
+
+| Windowed | Status Indicators |
+|-|-|
+|<img src="https://github.com/user-attachments/assets/a81f9fdd-b91a-4309-8ada-f5a4fdfe8077" />|<img src="https://github.com/user-attachments/assets/f828e6a7-c1fc-47a1-afad-53a04a72d91e" />|
+
+| Settings Menu | Padding Disabled |
+|-|-|
+|<img src="https://github.com/user-attachments/assets/e10a5636-f6fc-4e56-b8d8-2c5d031fd954" />|<img src="https://github.com/user-attachments/assets/b3f0bb86-3235-4e5a-8550-af5040c15977" />|
+
 ## Features
 
 - Fast startup
