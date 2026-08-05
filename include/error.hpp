@@ -1,10 +1,5 @@
 #pragma once
 
-enum class ErrorCode {
-    None = 0,
-    NoImage,
-    FileNotFound,
-    UnsupportedFormat
-};
+#include <string>
 
-void error(ErrorCode code);
+void error(std::string_view msg);

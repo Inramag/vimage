@@ -14,38 +14,17 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 add_executable(vimage WIN32
     src/main.cpp
 
-    src/app.cpp
     src/error.cpp
     src/stb/stb_image.cpp
     src/vimage.cpp
+    src/ui.cpp
     src/settings.cpp
     src/viewer.cpp
 
+    src/unicode.cpp
+
     icon.rc
 )
-
-target_compile_options(vimage PRIVATE
-    $<$<CONFIG:Release>:-O3>
-    $<$<CONFIG:Release>:-DNDEBUG>
-
-    -Wall
-    -Wextra
-    -Wpedantic
-)
-
-target_link_options(vimage PRIVATE
-    $<$<CONFIG:Release>:-s>
-    -static-libgcc
-    -static-libstdc++
-)
-
-include(CheckIPOSupported)
-
-check_ipo_supported(RESULT IPO_SUPPORTED)
-
-if(IPO_SUPPORTED)
-    set_property(TARGET vimage PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
-endif()
 
 target_include_directories(vimage PRIVATE
     include
@@ -60,6 +39,19 @@ target_link_libraries(vimage PRIVATE
     ${CMAKE_SOURCE_DIR}/raylib/lib/libraylibdll.a
     winmm
 )
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(vimage PRIVATE -municode)
+    target_link_options(vimage PRIVATE -municode)
+endif()
+
+include(CheckIPOSupported)
+
+check_ipo_supported(RESULT IPO_SUPPORTED)
+
+if(IPO_SUPPORTED)
+    set_property(TARGET vimage PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
+endif()
 
 add_custom_command(TARGET vimage POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

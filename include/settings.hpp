@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <cstdint>
 
 struct Config {
@@ -7,19 +8,19 @@ struct Config {
     int keys[3]{82, 71, 80};
 };
 
-class Settings {
-public:
-    static void save();
-    static void load();
+namespace settings {
+    void save();
+    void load();
 
-    static bool getflag(uint8_t flag);
-    static void setflag(uint8_t flag, bool value);
+    bool getflag(uint8_t flag);
+    void setflag(uint8_t flag, bool value);
     
-    static int getkey(int key);
-    static void setkey(int key, int value);
+    int getkey(int key);
+    void setkey(int key, int value);
     
-    static bool checkerboard();
-    static bool padding();
+    bool checkerboard();
+    bool padding();
     
-    static Config config;
+    extern std::filesystem::path program;
+    extern Config config;
 };

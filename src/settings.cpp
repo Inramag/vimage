@@ -2,15 +2,16 @@
 
 #include <fstream>
 
-Config Settings::config{};
+std::filesystem::path settings::program;
+Config settings::config;
 
-void Settings::save() {
-    std::ofstream file("conf.bin", std::ios::binary);
+void settings::save() {
+    std::ofstream file(program / "conf.bin", std::ios::binary);
     file.write(reinterpret_cast<const char*>(&config), sizeof(config));
 }
 
-void Settings::load() {
-    std::ifstream file("conf.bin", std::ios::binary);
+void settings::load() {
+    std::ifstream file(program / "conf.bin", std::ios::binary);
     if (!file) {
         save();
         return;
@@ -18,27 +19,27 @@ void Settings::load() {
     file.read(reinterpret_cast<char*>(&config), sizeof(config));
 }
 
-bool Settings::getflag(uint8_t flag) {
+bool settings::getflag(uint8_t flag) {
     return config.flags & flag;
 }
-void Settings::setflag(uint8_t flag, bool value) {
+void settings::setflag(uint8_t flag, bool value) {
     if (value) config.flags |= flag;
     else config.flags &= ~flag;
     save();
 }
 
-int Settings::getkey(int key) {
+int settings::getkey(int key) {
     return config.keys[key];
 }
-void Settings::setkey(int key, int value) {
+void settings::setkey(int key, int value) {
     config.keys[key] = value;
     save();
 }
 
-bool Settings::checkerboard() {
+bool settings::checkerboard() {
     return getflag(0b00000001);
 }
 
-bool Settings::padding() {
+bool settings::padding() {
     return getflag(0b00000010);
 }

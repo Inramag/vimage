@@ -4,12 +4,14 @@
 
 #include <vector>
 
-enum class VFormat {
+#include <raylib.h>
+
+enum class Format {
     unknown,
     png, jpg
 };
 
-struct VFrame {
+struct Frame {
     std::vector<unsigned char> pixels;
 };
 
@@ -17,9 +19,11 @@ struct VImage {
     int width = 0;
     int height = 0;
     bool hasalpha = false;
-    VFormat format = VFormat::unknown;
+    Format format = Format::unknown;
 
-    std::vector<VFrame> frames{};
+    std::vector<Frame> frames{};
+
+    void get(Texture& texture);
 
     static VImage load(const std::filesystem::path& path);
 };
