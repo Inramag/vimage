@@ -1,17 +1,14 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.10)
 
 project(vimage LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-endif()
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-add_executable(vimage WIN32
+add_executable(vimage# WIN32
     src/main.cpp
 
     src/error.cpp
@@ -43,14 +40,6 @@ target_link_libraries(vimage PRIVATE
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(vimage PRIVATE -municode)
     target_link_options(vimage PRIVATE -municode)
-endif()
-
-include(CheckIPOSupported)
-
-check_ipo_supported(RESULT IPO_SUPPORTED)
-
-if(IPO_SUPPORTED)
-    set_property(TARGET vimage PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE TRUE)
 endif()
 
 add_custom_command(TARGET vimage POST_BUILD

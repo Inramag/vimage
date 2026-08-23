@@ -8,11 +8,18 @@
 
 enum class Format {
     unknown,
-    png, jpg
+    png, jpg,
+    gif
 };
 
 struct Frame {
+    Frame(std::vector<unsigned char> data, int w, int h, int _delay = 0) : pixels(data), delay(_delay) {
+        if (IsWindowReady()) texture = LoadTextureFromImage({data.data(), w, h, 1, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8});
+    }
+    
     std::vector<unsigned char> pixels;
+    Texture texture;
+    int delay;
 };
 
 struct VImage {
@@ -22,8 +29,6 @@ struct VImage {
     Format format = Format::unknown;
 
     std::vector<Frame> frames{};
-
-    void get(Texture& texture);
 
     static VImage load(const std::filesystem::path& path);
 };

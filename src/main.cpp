@@ -28,11 +28,11 @@ int wmain(int argc, wchar_t* argv[]) {
             break;
 
         case ERROR_ACCESS_DENIED:
-            error("");
+            error("Access denied.");
             break;
         
         case ERROR_SHARING_VIOLATION:
-            error("");
+            error("File is being used by anouther process.");
             break;
 
         default:
@@ -52,6 +52,7 @@ int wmain(int argc, wchar_t* argv[]) {
     SetWindowMinSize(200, 200);
 
     viewer::load(img);
+    ui::load();
 
     while(!WindowShouldClose()) {
         if (IsKeyPressed(KEY_F1)) ui::toggle_status();

@@ -1,3 +1,5 @@
+#include "raylib.h"
+#include <chrono>
 #include <viewer.hpp>
 
 #include <settings.hpp>
@@ -9,6 +11,9 @@
 
 static VImage img;
 static Texture texture;
+static int frame = 0, frames;
+static bool isgif, plays = false;
+static std::chrono::steady_clock::time_point currtime;
 
 static float scale;
 static float zoom = 1;
@@ -115,6 +120,25 @@ void grid() {
     }
 }
 
+void setframe(int n) {
+    frame = n;
+    texture = img.frames[frame].texture;
+    currtime = std::chrono::steady_clock::now();
+    viewer::getscale();
+}
+
+void animate() {
+    if (!isgif || !plays) return;
+
+    auto now = std::chrono::steady_clock::now();
+
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
+        now - currtime
+    ).count();
+
+    if (elapsed >= img.frames[frame].delay) setframe((frame + 1) % img.frames.size());
+}
+
 void _draw() {
     ClearBackground({240, 240, 240, 255});
 
@@ -141,7 +165,12 @@ void _draw() {
 void viewer::load(const VImage& vimg) {
     img = std::move(vimg);
 
-    img.get(texture);
+    for (Frame& frame : img.frames)
+        frame.texture = LoadTextureFromImage({frame.pixels.data(), img.width, img.height, 1, PIXELFORMAT_UNCOMPRESSED_R8G8B8A8});
+
+    texture = img.frames[0].texture;
+
+    isgif = img.format == Format::gif;
     
     getscale();
 
@@ -160,6 +189,17 @@ void viewer::draw() {
         getscale();
     }
     if (IsKeyPressed(KEY_F11)) ToggleFullscreen();
+
+    if (isgif) {
+        if (IsKeyPressed(KEY_SPACE)) {
+            plays = !plays;
+            currtime = std::chrono::steady_clock::now();
+        }
+        if (IsKeyPressed(KEY_LEFT)) setframe((frame + img.frames.size() - 1) % img.frames.size());
+        if (IsKeyPressed(KEY_RIGHT)) setframe((frame + 1) % img.frames.size());
+    }
+
+    animate();
     
     amended();
     _draw();

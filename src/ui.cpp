@@ -1,3 +1,4 @@
+#include <iostream>
 #include <ui.hpp>
 
 #include <settings.hpp>
@@ -35,10 +36,12 @@ static KeyboardKey getkey(KeyboardKey curr) {
 
 static bool load_asset(const std::filesystem::path& asset, Texture& texture) {
     const std::filesystem::path path = settings::program / "assets" / asset;
-    if (std::filesystem::exists(asset) && std::filesystem::is_regular_file(asset)) {
-        VImage::load(asset).get(texture);
+    if (std::filesystem::exists(path) && std::filesystem::is_regular_file(path)) {
+        texture = VImage::load(path).frames[0].texture;
+        std::cout << "[Assets] load asset " + path.string() << ".\n";
         return true;
     }
+    std::cout << "[Assets] asset " + path.string() + " no exist.\n";
     return false;
 }
 
