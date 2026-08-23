@@ -4,6 +4,7 @@
 #include <cstdint>
 
 struct Config {
+    // persistent viewer settings.
     uint8_t flags = 0b00000011;
     int keys[3]{82, 71, 80};
 };

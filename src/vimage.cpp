@@ -1,4 +1,3 @@
-#include <cstdlib>
 #include <vimage.hpp>
 
 #include <stb/stb_image.h>
@@ -8,7 +7,8 @@
 
 VImage VImage::load(const std::filesystem::path& path) {
     VImage img{};
-    
+
+    // determine the image format from its file extension.    
     std::string ext = path.extension().string();
 
     for (char& c : ext) c = std::tolower(c);
@@ -18,6 +18,7 @@ VImage VImage::load(const std::filesystem::path& path) {
     else if (ext == ".gif") img.format = Format::gif;
     else error("Unsupported image format.");
 
+    // read the entire file into memory for stb_image.
     std::ifstream file(path, std::ios::binary);
 
     std::vector<unsigned char> bytes(
@@ -29,6 +30,8 @@ VImage VImage::load(const std::filesystem::path& path) {
 
     int* delays;
     int w = 0, h = 0, c = 0, comp = 0;
+
+    // GIFs are decoded into a contiguous array containing all frames.
     unsigned char* raw = img.format == Format::gif ?
         stbi_load_gif_from_memory(bytes.data(), static_cast<int>(bytes.size()), &delays, &w, &h, &c, &comp, 4) :
         stbi_load_from_memory(bytes.data(), static_cast<int>(bytes.size()), &w, &h, &comp, 4);
@@ -37,6 +40,8 @@ VImage VImage::load(const std::filesystem::path& path) {
     if (img.format == Format::gif) {
         for (int i = 0; i < c; i++)
             img.frames.push_back({std::vector<unsigned char>(raw + i * s, raw + (i + 1) * s), w, h, delays[i]});
+
+        // delay is allocated by stb_image's memory allocator.
         free(delays);
     } else img.frames.push_back({std::vector<unsigned char>(raw, raw + s), w, h});
 

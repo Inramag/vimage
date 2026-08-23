@@ -12,25 +12,31 @@ void settings::save() {
 
 void settings::load() {
     std::ifstream file(program / "conf.bin", std::ios::binary);
+
+    // create the configuration file with default settings if it doesn't exist.
     if (!file) {
         save();
         return;
     }
+    
     file.read(reinterpret_cast<char*>(&config), sizeof(config));
 }
 
 bool settings::getflag(uint8_t flag) {
     return config.flags & flag;
 }
+
 void settings::setflag(uint8_t flag, bool value) {
     if (value) config.flags |= flag;
     else config.flags &= ~flag;
+    
     save();
 }
 
 int settings::getkey(int key) {
     return config.keys[key];
 }
+
 void settings::setkey(int key, int value) {
     config.keys[key] = value;
     save();

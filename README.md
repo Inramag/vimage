@@ -2,7 +2,7 @@
 
 A lightweight and fast image viewer for Windows.
 
-## Scrrenshots
+## Screenshots
 
 | Windowed | Status Indicators |
 |-|-|
@@ -25,16 +25,19 @@ A lightweight and fast image viewer for Windows.
 - Configurable keyboard shortcuts
 - Persistent settings
 - Window resizing support
+- GIF animation
+- Manual GIF frame switching
 
 ## Supported Formats
 
 - PNG
 - JPEG (.jpg, .jpeg)
+- GIF
 
 ## Controls
 
 | Action | Input |
-|--------|-------|
+|-|-|
 | Toggle Status Indicators | F1 |
 | Toggle Settings Menu | F2 |
 | Zoom | Ctrl + Mouse Wheel |
@@ -42,6 +45,9 @@ A lightweight and fast image viewer for Windows.
 | Reset View | R *(configurable)* |
 | Toggle Checkerboard | G *(configurable)* |
 | Toggle Padding | P *(configurable)* |
+| Play / Pause GIF | Space |
+| Previous GIF Frame | Left Arrow |
+| Next GIF Frame | Right Arrow |
 
 ## Configuration
 

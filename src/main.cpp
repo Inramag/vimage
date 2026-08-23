@@ -7,7 +7,6 @@
 #include <settings.hpp>
 
 #include <ui.hpp>
-#include <vimage.hpp>
 #include <viewer.hpp>
 
 int wmain(int argc, wchar_t* argv[]) {
@@ -16,6 +15,7 @@ int wmain(int argc, wchar_t* argv[]) {
 
     const std::filesystem::path path = argv[1];
 
+    // check if the specified path exists and is accessible.
     if (GetFileAttributesW(path.c_str()) == INVALID_FILE_ATTRIBUTES) {
         switch (GetLastError()) {
         case ERROR_INVALID_NAME:
@@ -32,7 +32,7 @@ int wmain(int argc, wchar_t* argv[]) {
             break;
         
         case ERROR_SHARING_VIOLATION:
-            error("File is being used by anouther process.");
+            error("File is being used by another process.");
             break;
 
         default:
@@ -41,16 +41,17 @@ int wmain(int argc, wchar_t* argv[]) {
         }
     }
 
-    VImage img = VImage::load(path);
-
     settings::program = std::filesystem::path(argv[0]).parent_path();
     settings::load();
+
+    VImage img = VImage::load(path);
 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(200, 200, unicode::to_utf8(L"vimage > " + path.wstring()).c_str());
     SetExitKey(KEY_NULL);
     SetWindowMinSize(200, 200);
 
+    // load resources that require an initialized window
     viewer::load(img);
     ui::load();
 
