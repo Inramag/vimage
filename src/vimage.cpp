@@ -1,3 +1,5 @@
+#include <array>
+#include <utility>
 #include <vimage.hpp>
 
 #include <stb/stb_image.h>
@@ -5,22 +7,39 @@
 
 #include <error.hpp>
 
+std::array<std::pair<std::string, Format>, 4> magics {
+    std::pair {"\x89PNG\r\n\x1a\n", Format::png},
+    std::pair {"\xFF\xD8\xFF",      Format::jpg},
+    std::pair {"GIF87a",            Format::gif},
+    std::pair {"GIF89a",            Format::gif}
+};
+
 VImage VImage::load(const std::filesystem::path& path) {
     VImage img{};
 
-    // determine the image format from its file extension.    
-    std::string ext = path.extension().string();
-
-    for (char& c : ext) c = std::tolower(c);
-
-    if (ext == ".png") img.format = Format::png;
-    else if (ext == ".jpg" || ext == ".jpeg") img.format = Format::jpg;
-    else if (ext == ".gif") img.format = Format::gif;
-    else error("Unsupported image format.");
-
-    // read the entire file into memory for stb_image.
+    // determine the image format from its file magic.    
     std::ifstream file(path, std::ios::binary);
 
+    bool iscorrect = false;
+
+    for (const auto& magic : magics) {
+        std::string fmagic(magic.first.length(), '\0');
+
+        file.read(fmagic.data(), magic.first.length());
+
+        if (file.gcount() == magic.first.length() && fmagic == magic.first) {
+            iscorrect = true;
+            img.format = magic.second;
+        }
+
+        file.seekg(0);
+
+        if (iscorrect) break;
+    }
+    
+    if (!iscorrect) error("Unsupported image format.");
+
+    // read the entire file into memory for stb_image.
     std::vector<unsigned char> bytes(
         (std::istreambuf_iterator<char>(file)),
         std::istreambuf_iterator<char>()
