@@ -1,4 +1,5 @@
 #include <array>
+#include <iostream>
 #include <utility>
 #include <vimage.hpp>
 
@@ -7,10 +8,11 @@
 
 #include <error.hpp>
 
-std::array<std::pair<std::string, Format>, 5> magics {
+std::array<std::pair<std::string, Format>, 6> magics {
     std::pair {"BM",                Format::bmp},
     std::pair {"\x89PNG\r\n\x1a\n", Format::png},
     std::pair {"\xFF\xD8\xFF",      Format::jpg},
+    std::pair {"8BPS",              Format::psd},
     std::pair {"GIF87a",            Format::gif},
     std::pair {"GIF89a",            Format::gif}
 };
@@ -25,17 +27,17 @@ VImage VImage::load(const std::filesystem::path& path) {
 
     for (const auto& magic : magics) {
         std::string fmagic(magic.first.length(), '\0');
-
+            
         file.read(fmagic.data(), magic.first.length());
 
-        if (file.gcount() == magic.first.length() && fmagic == magic.first) {
-            iscorrect = true;
-            img.format = magic.second;
-        }
-
+        if (file.gcount() == magic.first.length() && fmagic == magic.first) iscorrect = true;
+        
         file.seekg(0);
 
-        if (iscorrect) break;
+        if (iscorrect) {
+            img.format = magic.second;
+            break;
+        }
     }
     
     if (!iscorrect) error("Unsupported image format.");
@@ -55,6 +57,11 @@ VImage VImage::load(const std::filesystem::path& path) {
     unsigned char* raw = img.format == Format::gif ?
         stbi_load_gif_from_memory(bytes.data(), static_cast<int>(bytes.size()), &delays, &w, &h, &c, &comp, 4) :
         stbi_load_from_memory(bytes.data(), static_cast<int>(bytes.size()), &w, &h, &comp, 4);
+
+    if (!raw) {
+        std::cerr << "[stb image] " << stbi_failure_reason() << '\n';
+        return img;
+    }
 
     size_t s = static_cast<size_t>(w) * h * 4;
     if (img.format == Format::gif) {

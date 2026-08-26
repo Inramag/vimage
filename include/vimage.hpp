@@ -10,6 +10,7 @@ enum class Format {
     unknown,
     bmp,
     png, jpg,
+    psd,
     gif
 };
 
