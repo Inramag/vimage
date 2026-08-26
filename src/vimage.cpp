@@ -7,7 +7,8 @@
 
 #include <error.hpp>
 
-std::array<std::pair<std::string, Format>, 4> magics {
+std::array<std::pair<std::string, Format>, 5> magics {
+    std::pair {"BM",                Format::bmp},
     std::pair {"\x89PNG\r\n\x1a\n", Format::png},
     std::pair {"\xFF\xD8\xFF",      Format::jpg},
     std::pair {"GIF87a",            Format::gif},

@@ -8,6 +8,7 @@
 // supported image formats.
 enum class Format {
     unknown,
+    bmp,
     png, jpg,
     gif
 };
